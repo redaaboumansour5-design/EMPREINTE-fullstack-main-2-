@@ -1,0 +1,517 @@
+\documentclass[11pt,a4paper,oneside]{report}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=2.7cm,headheight=14pt]{geometry}
+\usepackage{microtype}
+\usepackage{setspace}
+\usepackage{parskip}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{enumitem}
+\usepackage{float}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,shapes.geometric,fit,calc}
+\usepackage{listings}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{url}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{caption}
+\usepackage{lastpage}
+
+\definecolor{menaranavy}{HTML}{0F172A}
+\definecolor{menarared}{HTML}{DC2626}
+\definecolor{lightgray}{HTML}{F1F5F9}
+\definecolor{midgray}{HTML}{64748B}
+\definecolor{codegray}{HTML}{F8FAFC}
+\definecolor{codegreen}{HTML}{166534}
+\definecolor{codeblue}{HTML}{1D4ED8}
+
+\hypersetup{colorlinks=true,linkcolor=menaranavy,urlcolor=codeblue,citecolor=menarared,pdftitle={SmartPointage - Rapport de projet PFA},pdfauthor={Equipe projet}}
+\onehalfspacing
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\setlist[itemize]{leftmargin=1.2cm}
+\setlist[enumerate]{leftmargin=1.2cm}
+\titleformat{\chapter}[display]{\normalfont\bfseries\color{menaranavy}}{\filleft\Large Chapitre \thechapter}{1ex}{\Huge\filleft}
+\titleformat{\section}{\Large\bfseries\color{menaranavy}}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\large\bfseries\color{menaranavy}}{\thesubsection}{0.7em}{}
+\titlespacing*{\chapter}{0pt}{-20pt}{30pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textcolor{midgray}{SmartPointage -- Rapport PFA}}
+\fancyhead[R]{\small\textcolor{midgray}{Groupe Menara}}
+\fancyfoot[C]{\small\thepage\ / \pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{menarared}\leaders\hrule height \headrulewidth\hfill}}
+\lstset{backgroundcolor=\color{codegray},basicstyle=\ttfamily\small,keywordstyle=\color{codeblue}\bfseries,commentstyle=\color{codegreen},stringstyle=\color{menarared},numbers=left,numberstyle=\tiny\color{midgray},numbersep=8pt,frame=single,rulecolor=\color{lightgray},breaklines=true,columns=fullflexible,showstringspaces=false}
+\newcommand{\smartpointage}{\textsc{SmartPointage}}
+\newcommand{\menara}{Ménara Préfa}
+\newcommand{\placeholder}[1]{\begin{center}\fcolorbox{midgray}{lightgray}{\parbox{0.85\textwidth}{\centering\vspace{0.35cm}\textit{Espace réservé : #1}\vspace{0.35cm}}}\end{center}}
+
+\begin{document}
+\begin{titlepage}
+\centering
+\vspace*{1.2cm}
+{\Large\bfseries GROUPE MENARA}\\[0.2cm]
+{\large\bfseries MÉNARA PRÉFA}\\[1.5cm]
+\rule{\textwidth}{1.2pt}\\[0.5cm]
+{\Huge\bfseries\textcolor{menaranavy}{SMARTPOINTAGE}}\\[0.35cm]
+{\Large Système intelligent de pointage et de gestion des présences}\\[0.5cm]
+\rule{\textwidth}{1.2pt}\\[1.8cm]
+\begin{tikzpicture}
+\draw[fill=menaranavy,draw=menaranavy,rounded corners=4pt] (0,0) rectangle (5.8,1.1);
+\draw[fill=menarared,draw=menarared] (0.35,0.35) rectangle (1.05,0.75);
+\node[white,font=\Large\bfseries] at (3.3,0.55) {Portail collaborateur};
+\end{tikzpicture}\\[1.8cm]
+{\large Rapport de Projet de Fin d'Année}\\[0.3cm]
+{\large Présenté en vue de l'obtention du diplôme}\\[1.4cm]
+\begin{tabular}{>{\bfseries}p{5cm}p{7cm}}
+Réalisé par : & Équipe projet SmartPointage \\
+Encadré par : & À compléter par l'établissement \\
+Organisme d'accueil : & Ménara Préfa \\
+Année universitaire : & 2025--2026
+\end{tabular}\\[1.6cm]
+{\large \today}
+\end{titlepage}
+
+\pagenumbering{roman}
+\chapter*{Dédicace}
+\thispagestyle{empty}
+\begin{center}\vspace*{3cm}\textit{À toutes les personnes qui nous ont accompagnés durant la réalisation de ce projet,\\ et à celles qui contribuent chaque jour à l'amélioration des outils numériques de l'entreprise.}\end{center}
+\newpage
+\chapter*{Remerciements}
+Nous adressons nos sincères remerciements à la direction de \menara{} pour l'accueil accordé à ce projet et pour la confiance accordée à l'équipe de développement. Nous remercions notre encadrant académique ainsi que les collaborateurs ayant partagé leur expérience des processus de pointage, de validation et de suivi administratif.
+
+Nous remercions enfin les personnes ayant participé aux réunions de cadrage, aux essais fonctionnels et aux retours sur l'ergonomie. Leurs remarques ont permis de transformer une idée initiale en une application full-stack structurée, testable et évolutive.
+\newpage
+\chapter*{Résumé}
+La gestion des présences constitue une activité importante pour une organisation industrielle et administrative. Les méthodes manuelles de pointage peuvent générer des erreurs, des doublons, des retards de traitement et une faible traçabilité. Le projet \smartpointage{} propose un portail interne destiné aux collaborateurs, managers, ressources humaines et administrateurs de \menara{}.
+
+La solution associe une interface React, une API REST Flask, une base relationnelle exploitée avec SQLAlchemy et un service local de reconnaissance faciale. Elle permet l'authentification, le pointage d'entrée et de sortie, l'enrôlement biométrique, la consultation des présences, la gestion des congés et du télétravail, la validation des demandes et la génération de rapports CSV compatibles avec Excel.
+
+La conception repose sur une séparation entre présentation, logique métier et persistance. Les règles de présence sont centralisées afin de garantir une interprétation homogène des jours ouvrés, congés, télétravail, absences et retards. Les dates et heures sont traitées selon le fuseau officiel de Casablanca, tandis que les contrôles d'accès sont appliqués côté serveur selon le rôle et les permissions.
+
+\textbf{Mots-clés :} pointage, reconnaissance faciale, React, Flask, SQLAlchemy, SQL Server, JWT, présence, congé, télétravail, RBAC.
+\newpage
+\chapter*{Abstract}
+Attendance management is a key operational process for an industrial and administrative organization. Manual methods may lead to errors, duplicate entries, delayed validation and limited traceability. The \smartpointage{} project provides an internal portal for employees, managers, human resources and administrators of \menara{}.
+
+The solution combines a React interface, a Flask REST API, a relational database accessed through SQLAlchemy and a local facial recognition service. It supports authentication, entry and exit check-in, biometric enrollment, attendance consultation, leave and remote-work requests, approval workflows and CSV reports compatible with Excel.
+\newpage
+\tableofcontents
+\newpage
+\listoffigures
+\newpage
+\listoftables
+\newpage
+\pagenumbering{arabic}
+
+\chapter{Introduction générale}
+\section{Contexte}
+La transformation numérique des processus internes concerne également la gestion administrative. Dans une organisation où plusieurs profils collaborent et où les décisions RH doivent être justifiables, disposer d'une information de présence cohérente devient une nécessité opérationnelle.
+
+Le pointage traditionnel par registre, badge ou saisie manuelle peut devenir insuffisant lorsque les équipes sont nombreuses, réparties dans plusieurs services ou soumises à des modes de travail différents. La reconnaissance faciale apporte un moyen de vérification rapide, à condition d'être intégrée dans un système sécurisé, explicable et contrôlé.
+\section{Problématique}
+La problématique est la suivante : \textit{comment concevoir une application interne capable d'enregistrer les présences de manière simple et fiable, tout en donnant à chaque rôle une vue adaptée et en conservant une traçabilité complète des décisions ?}
+Cette question implique l'identification, les entrées et sorties, les retards, les absences, les congés, le télétravail, la sécurité, les rapports et la cohérence des heures.
+\section{Objectifs}
+\begin{itemize}
+\item automatiser l'enregistrement des pointages ;
+\item réduire les erreurs de saisie ;
+\item consulter rapidement présences, absences et retards ;
+\item fournir des indicateurs adaptés à chaque rôle ;
+\item gérer les demandes de congé et télétravail ;
+\item sécuriser les accès et opérations sensibles ;
+\item produire des exports exploitables dans Excel ;
+\item disposer d'une base technique évolutive et testable.
+\end{itemize}
+\section{Méthodologie}
+Le projet a été réalisé selon une démarche itérative. Le cadrage a identifié les acteurs et fonctions. La conception a défini les modèles, routes et écrans. Le développement a été organisé par tranches : authentification, employés, pointage, demandes, dashboard et rapports. Chaque tranche a été vérifiée par des tests unitaires, des compilations et des essais d'intégration.
+\section{Organisation du rapport}
+Le rapport présente le contexte, l'analyse des besoins, la conception fonctionnelle et technique, l'implémentation frontend/backend, la biométrie, la sécurité, les tests, le déploiement, les limites et les perspectives.
+
+\chapter{Présentation de l'organisme et du besoin}
+\section{Ménara Préfa}
+\menara{} évolue dans un environnement où la coordination entre services, équipes opérationnelles et fonctions support est essentielle. Les collaborateurs peuvent travailler dans des bureaux, des espaces de production ou sur des sites nécessitant un suivi régulier. Le projet est donc positionné comme un \textbf{portail interne officiel}, et non comme une plateforme commerciale.
+\section{Difficultés observées}
+\begin{itemize}
+\item enregistrement non homogène des heures ;
+\item difficulté à distinguer absence et congé approuvé ;
+\item manque de visibilité immédiate pour les managers ;
+\item calculs de retard différents selon les outils ;
+\item traitement manuel des demandes RH ;
+\item exports nécessitant une remise en forme ;
+\item risques liés aux comptes partagés et aux droits trop larges.
+\end{itemize}
+\section{Solution proposée}
+La solution est une application web trois tiers. Le collaborateur accède à son espace depuis un navigateur. L'API vérifie son identité et ses permissions, applique les règles métier et interroge la base. Le service biométrique intervient lorsqu'une capture doit être analysée.
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[node distance=1.2cm,box/.style={draw=menaranavy,rounded corners,fill=lightgray,minimum width=4cm,minimum height=1cm,align=center},arrow/.style={-Latex,thick,draw=menarared}]
+\node[box] (u) {Collaborateur / Manager\\RH / Administrateur};
+\node[box,right=of u] (f) {Interface React\\Navigateur};
+\node[box,right=of f] (a) {API Flask\\Règles et permissions};
+\node[box,right=of a] (d) {SQL Server\\Données persistantes};
+\node[box,below=of a] (b) {Service biométrique\\Traitement local};
+\draw[arrow] (u)--(f)--(a)--(d);\draw[arrow] (a)--(b);
+\end{tikzpicture}
+\caption{Vue générale de la solution}
+\end{figure}
+
+\chapter{Analyse des besoins}
+\section{Acteurs}
+\begin{longtable}{p{3.5cm}p{10cm}}
+\toprule\textbf{Acteur} & \textbf{Responsabilités}\\\midrule
+Employé & Se connecter, pointer, consulter ses pointages et soumettre des demandes.\\
+Manager & Consulter son équipe, suivre les présences et valider certaines demandes.\\
+RH & Gérer les employés, enrôler les visages, valider les pointages et produire les rapports.\\
+Administrateur & Administrer la configuration, les comptes techniques et l'accès complet.\\
+\bottomrule
+\end{longtable}
+\section{Besoins fonctionnels}
+\subsection{Authentification}
+L'utilisateur s'authentifie avec son email ou son identifiant. Le mot de passe est vérifié par comparaison avec un hash. Après succès, un JWT identifie le principal lors des requêtes.
+\subsection{Gestion des employés}
+Les RH créent un profil avec matricule, nom, prénom, email, mot de passe, poste, rôle et département. Les doublons de matricule et email sont refusés. L'enrôlement biométrique est séparé de la création administrative.
+\subsection{Pointage}
+Une capture est analysée. Si le visage est reconnu selon les seuils, le système enregistre une entrée ou une sortie. Une sortie trop proche de l'entrée est bloquée. Les tentatives rejetées sont conservées.
+\subsection{Présence, absence et retard}
+Le service distingue jours ouvrés, jours fériés, congés approuvés et télétravail approuvé. Un employé actif sans entrée valide ou en attente est absent. Une entrée strictement après 08:30 est tardive.
+\subsection{Demandes et rapports}
+Les demandes ont un statut soumis, approuvé ou rejeté. Le dashboard et les rapports utilisent les données persistées. Les CSV sont encodés en UTF-8 avec séparateur point-virgule.
+\section{Besoins non fonctionnels}
+\begin{longtable}{p{4cm}p{9.5cm}}
+\toprule\textbf{Critère} & \textbf{Exigence}\\\midrule
+Sécurité & Authentification, permissions serveur, hash et restriction des périmètres.\\
+Performance & Requêtes filtrées, index et limitation des volumes.\\
+Maintenabilité & Modules séparés, services métier et tests ciblés.\\
+Ergonomie & Interface claire, responsive et messages compréhensibles.\\
+Traçabilité & Historique des rapports et statuts de validation.\\
+Compatibilité & Navigateur moderne, REST, SQL Server et Excel.\\
+\bottomrule
+\end{longtable}
+
+\chapter{Conception fonctionnelle}
+\section{Cas d'utilisation}
+\begin{enumerate}
+\item S'authentifier ;\item Pointer par caméra ;\item Consulter ses pointages ;\item Déclarer du télétravail ;\item Déclarer un congé ;\item Valider une demande ;\item Gérer les employés ;\item Enrôler une empreinte ;\item Consulter le dashboard ;\item Générer un rapport ;\item Administrer la configuration.
+\end{enumerate}
+\placeholder{Diagramme UML global des cas d'utilisation}
+\section{Scénario nominal du pointage}
+Le collaborateur ouvre la page de pointage et autorise la caméra. Le navigateur envoie l'image à l'API. Le serveur vérifie le JWT, détermine le mode de travail, récupère l'empreinte, calcule un score et applique la configuration. Le pointage est enregistré et la réponse contient type, statut, mode et score.
+\section{Scénarios alternatifs}
+\begin{itemize}
+\item Aucun visage : opération refusée.
+\item Aucun enrôlement : contact RH demandé.
+\item Score intermédiaire : pointage en attente.
+\item Sortie trop proche : compte à rebours retourné.
+\item Limite de tentatives : nouvelle tentative refusée.
+\item Token invalide : accès refusé.
+\end{itemize}
+\section{Règles de présence}
+\begin{enumerate}
+\item l'employé doit appartenir à l'effectif ;
+\item le week-end est exclu de l'absence ;
+\item un jour férié est classé férié ;
+\item un congé approuvé est classé congé ;
+\item un télétravail approuvé est classé présent ;
+\item une entrée valide ou en attente est classée présente ;
+\item sinon l'employé est absent.
+\end{enumerate}
+\section{Calcul d'un retard}
+Pour une heure locale $h$, on applique :
+\[
+retard(h)=\begin{cases}1 & \text{si }h>08{:}30{:}00,\\0 & \text{sinon.}\end{cases}
+\]
+Ainsi 08:30:00 est ponctuel et 08:30:01 est tardif.
+
+\chapter{Conception technique}
+\section{Architecture trois tiers}
+La présentation est réalisée avec React, les services applicatifs avec Flask et la persistance avec SQLAlchemy et SQL Server. Le découpage sépare les responsabilités et facilite les tests.
+\section{Flux d'une requête}
+\begin{figure}[H]\centering
+\begin{tikzpicture}[node distance=0.8cm,box/.style={draw=menaranavy,fill=lightgray,rounded corners,minimum width=3.1cm,minimum height=0.9cm,align=center},arrow/.style={-Latex,draw=menarared,thick}]
+\node[box] (r) {React};\node[box,right=of r] (c) {Client API};\node[box,right=of c] (f) {Flask};\node[box,right=of f] (s) {Service};\node[box,right=of s] (d) {SQLAlchemy};
+\draw[arrow] (r)--(c)--(f)--(s)--(d);\draw[arrow] (d) to[bend left=45] (r);
+\end{tikzpicture}\caption{Flux logique d'une requête}
+\end{figure}
+\section{Découpage backend}
+L'application utilise une factory Flask et des blueprints. Les modèles représentent les entités. Les routes exposent les ressources. Les services regroupent les traitements réutilisables : jours fériés, présence et reconnaissance faciale.
+\section{Découpage frontend}
+Le frontend sépare les pages, composants, contexte d'authentification et client HTTP. Le layout contient navigation et horloge. Les pages Overview, Pointages, Employees, Demandes, Remote, Reports et AI représentent les espaces principaux.
+
+\chapter{Modélisation des données}
+\section{Entités}
+Les entités principales sont Utilisateur, Pointage, ReconnaissanceFaciale, Departement, Conge, Teletravail, Configuration, Rapport et Permission.
+\section{Relations}
+Un utilisateur appartient à un département et possède plusieurs pointages. Il peut posséder une empreinte faciale et soumettre plusieurs demandes. Un rapport est généré par un utilisateur autorisé.
+\placeholder{Diagramme de classes UML complet}
+\section{Contraintes}
+L'unicité du matricule et de l'email évite les doublons. Les contraintes de domaine limitent rôles et statuts. Les dates de fin ne précèdent pas les dates de début. Les clés étrangères garantissent la cohérence relationnelle.
+\section{Indexation}
+Les colonnes email, matricule, utilisateur_id, date_heure, statut et departement_id sont candidates à l'indexation. L'historique bénéficie d'un index sur date_heure. Les exports volumineux doivent être limités ou paginés.
+
+\chapter{Implémentation du backend}
+\section{Application Flask}
+La factory \texttt{create\_app} facilite la configuration et les tests. Les extensions SQLAlchemy, JWT et CORS sont initialisées au démarrage.
+\section{Autorisation}
+Le décorateur \texttt{role\_requis} vérifie le JWT et consulte la table des permissions. L'administrateur possède l'accès système. Les autres rôles doivent disposer de l'action demandée.
+\begin{lstlisting}[language=Python,caption={Contrôle d'accès simplifié}]
+def role_requis(*actions_autorisees):
+    def decorateur(fn):
+        @wraps(fn)
+        def wrapper(*args, **kwargs):
+            verify_jwt_in_request()
+            role = get_jwt().get("role")
+            if role == "administrateur":
+                return fn(*args, **kwargs)
+            if any(Permission.verifier_droit(role, action)
+                   for action in actions_autorisees):
+                return fn(*args, **kwargs)
+            return jsonify(erreur="Acces refuse."), 403
+        return wrapper
+    return decorateur
+\end{lstlisting}
+\section{Création d'un pointage}
+La route de scan résout le principal, vérifie la photo, détermine le mode, récupère l'empreinte, analyse l'image et applique la décision. Elle sépare reconnaissance et validation RH.
+\section{Seuils}
+Un score inférieur au seuil minimal est rejeté. Un score intermédiaire est placé en attente. Un score supérieur ou égal au seuil maximal est validé.
+\section{Service de présence}
+Le service fournit les bornes de journée Casablanca, la conversion UTC, les jours ouvrés, le statut journalier et les agrégats. Les routes de dashboard l'utilisent comme source unique.
+\section{Dates et heures}
+Les dates historiquement stockées sans timezone sont considérées comme UTC naïves. L'API les marque avec \texttt{Z}. Le frontend utilise \texttt{Africa/Casablanca}. Les bornes locales sont converties en UTC pour les requêtes.
+
+\chapter{Implémentation du frontend}
+\section{Structure React}
+L'application utilise des composants fonctionnels et des hooks. Le contexte d'authentification expose l'utilisateur et le rôle. Le routeur protège les espaces internes. Le client API centralise JWT et erreurs.
+\section{Espace employé}
+La page Pointages affiche l'historique, les filtres, la caméra et le résultat du scan. Après capture, la liste est actualisée sans rechargement complet.
+\section{Dashboard}
+Overview charge la vue globale, la vue mensuelle, la tendance et la répartition départementale. Les KPI proviennent des réponses backend. Le rôle détermine le périmètre.
+\section{Rapports}
+Reports propose les exports de pointages, employés, télétravail, demandes et rapports d'absences. Le BOM UTF-8 et le séparateur point-virgule facilitent l'ouverture Excel.
+\section{Design system}
+La charte utilise bleu nuit \texttt{\#0F172A}, rouge \texttt{\#DC2626}, surfaces \texttt{\#F8FAFC}/\texttt{\#F1F5F9} et texte secondaire \texttt{\#64748B}. Les boutons principaux utilisent l'accent rouge.
+
+\chapter{Reconnaissance faciale et biométrie}
+\section{Principe}
+Une image contenant un visage est transformée en représentation numérique, puis comparée à une référence enrôlée. La détection ne signifie pas encore l'identification.
+\section{Enrôlement}
+Les RH ou l'administrateur réalisent la capture de référence. Si aucun visage n'est détecté, l'opération est refusée. L'embedding est stocké dans une entité séparée.
+\section{Comparaison}
+La distance entre vecteurs normalisés peut être définie par :
+\[
+d(a,b)=\left\|\frac{a}{\|a\|_2}-\frac{b}{\|b\|_2}\right\|_2.
+\]
+Les seuils doivent être calibrés sur des données représentatives.
+\section{Limites}
+L'éclairage, l'orientation, la caméra et les variations d'apparence influencent la reconnaissance. Un parcours d'échec et une validation manuelle sont nécessaires.
+
+\chapter{Sécurité et protection des données}
+\section{Menaces}
+Les menaces sont le vol de compte, les accès hors périmètre, la falsification, l'exposition d'embeddings, l'injection SQL, les téléchargements abusifs et les erreurs de timezone.
+\section{Mesures}
+\begin{itemize}
+\item hash des mots de passe ;
+\item authentification JWT ;
+\item restriction des managers à leur département ;
+\item validation frontend et backend ;
+\item SQLAlchemy pour les requêtes ;
+\item rôles et permissions ;
+\item limitation des tentatives ;
+\item timestamps explicites ;
+\item HTTPS obligatoire en production.
+\end{itemize}
+\section{Matrice des permissions}
+\begin{table}[H]\centering\caption{Matrice synthétique}\begin{tabular}{lcccc}\toprule
+Action & Employé & Manager & RH & Admin\\\midrule
+Pointer & Oui & Oui & Oui & Système\\
+Dashboard & Oui & Oui & Oui & Oui\\
+Gérer employés & Non & Non & Oui & Oui\\
+Valider demandes & Non & Oui & Oui & Oui\\
+Générer rapports & Non & Non & Oui & Oui\\
+Configuration & Non & Non & Non & Oui\\\bottomrule
+\end{tabular}\end{table}
+\section{Biométrie}
+Les embeddings ne doivent pas être exposés dans les réponses. Les images ne doivent pas être conservées plus longtemps que nécessaire. L'enrôlement doit être réservé aux personnes habilitées et une politique de conservation doit être définie.
+
+\chapter{Tests et validation}
+\section{Stratégie}
+La stratégie combine tests unitaires, tests de routes, autorisation, compilation frontend et essais navigateur. Les règles de présence, demandes, rapports et permissions sont prioritaires.
+\section{Cas testés}
+Les tests vérifient congé approuvé, demande soumise, pointage en attente, pointage rejeté, week-end, embauche future, calcul d'absence et agrégation.
+\section{Frontière du retard}
+\begin{longtable}{p{4cm}p{4cm}p{4cm}}\toprule
+Heure & Résultat & Justification\\\midrule
+08:29:00 & Ponctuel & Avant limite\\
+08:30:00 & Ponctuel & Égalité autorisée\\
+08:30:01 & Retard & Supérieur strict\\
+08:31:00 & Retard & Après limite\\\bottomrule
+\end{longtable}
+\section{Tests de permissions}
+Un employé ne doit pas voir un autre profil. Un manager ne consulte que son département. Les RH et l'administrateur disposent des droits prévus. Les requêtes sans token sont rejetées.
+\section{Résultats}
+La suite backend vérifie demandes, présence, rapports et permissions. La compilation frontend vérifie les composants. La connexion à SQL Server et le téléchargement des modèles biométriques restent à valider dans l'infrastructure réelle.
+
+\chapter{Résultats obtenus}
+\section{Fonctionnalités livrées}
+Le projet couvre authentification, profils, enrôlement, pointage, suivi, demandes, validation, dashboard et rapports. Les erreurs sont structurées et les règles sensibles restent côté serveur.
+\section{Bénéfices collaborateur}
+Le collaborateur dispose d'un parcours court pour se connecter, pointer, consulter ses événements et déclarer une demande.
+\section{Bénéfices manager}
+Le manager dispose d'une vue départementale avec présents, télétravailleurs, retards, absences et demandes en attente.
+\section{Bénéfices RH}
+Les RH gèrent les employés, les enrôlements, les validations et les exports. La centralisation facilite le contrôle.
+\section{Bénéfices administration}
+L'administrateur supervise la configuration et les opérations techniques sensibles.
+
+\chapter{Déploiement et exploitation}
+\section{Prérequis}
+Le backend nécessite Python, les dépendances, SQL Server et un pilote ODBC compatible. Le frontend nécessite Node.js et npm. Le premier lancement biométrique peut télécharger les modèles nécessaires.
+\section{Configuration}
+Les variables d'environnement contiennent base de données, clé JWT, CORS et certificats. Les secrets ne doivent jamais être versionnés.
+\section{Initialisation}
+Le seed peut créer départements, permissions, comptes de démonstration et administrateur. Les identifiants doivent être modifiés en production.
+\section{Supervision}
+Les éléments à surveiller sont disponibilité API, connexion base, erreurs biométriques, échecs d'authentification, croissance des pointages et exports. Les logs ne doivent pas contenir de secrets.
+\section{Sauvegarde}
+Les données de présence, demandes, configuration et rapports doivent être sauvegardées. Un test de restauration doit être documenté.
+
+\chapter{Limites et perspectives}
+\section{Limites}
+La connexion SQL Server dépend de l'infrastructure. La reconnaissance dépend du matériel. La révocation immédiate des JWT n'est pas encore couverte par une blocklist. Les exports sont CSV plutôt que XLSX natifs.
+\section{Court terme}
+Ajouter pagination, filtres par département, export XLSX, audit avancé, messages contextualisés et tests d'API sur base éphémère.
+\section{Moyen terme}
+Prévoir une interface pour terminaux muraux, traitement biométrique asynchrone et notifications de validation.
+\section{Long terme}
+Support multi-sites, calendriers de travail, règles par unité, audit historique et tableaux de bord avancés, avec analyse d'impact biométrique.
+
+\chapter{Conclusion générale}
+Le projet \smartpointage{} répond à une problématique concrète de gestion des présences au sein de \menara{}. Il associe interface moderne, API structurée, persistance relationnelle et reconnaissance faciale locale.
+
+Le projet montre que la difficulté ne réside pas uniquement dans l'enregistrement d'une heure. Il faut définir les statuts, le périmètre de chaque rôle, la priorité des règles, le fuseau, les validations et la traçabilité. La centralisation du service de présence et la validation côté serveur sont essentielles.
+
+Le résultat constitue une base solide pour un déploiement pilote. Les prochaines étapes concernent l'infrastructure réelle, la protection biométrique, la performance et l'accompagnement utilisateur.
+
+\appendix
+\chapter{Annexe A -- Arborescence}
+\begin{lstlisting}[caption={Arborescence simplifiée}]
+EMPREINTE-fullstack/
+|-- backend/
+|   |-- app.py
+|   |-- config.py
+|   |-- models/
+|   |-- routes/
+|   |-- services/
+|   |-- tests/
+|   `-- requirements.txt
+|-- frontend/
+|   |-- package.json
+|   |-- vite.config.js
+|   `-- src/
+|       |-- api/
+|       |-- components/
+|       |-- context/
+|       `-- pages/
+|-- README.md
+`-- rapport_projet.tex
+\end{lstlisting}
+\chapter{Annexe B -- API principales}
+\begin{longtable}{p{5cm}p{3cm}p{5cm}}\toprule
+Endpoint & Méthode & Utilisation\\\midrule
+\texttt{/api/auth/login} & POST & Authentification\\
+\texttt{/api/pointage/scan} & POST & Pointage caméra\\
+\texttt{/api/pointage} & GET & Historique\\
+\texttt{/api/employes} & GET/POST & Gestion employés\\
+\texttt{/api/demandes} & GET/POST & Workflow RH\\
+\texttt{/api/dashboard/vue-ensemble} & GET & KPI\\
+\texttt{/api/dashboard/mois} & GET & KPI mensuels\\
+\texttt{/api/rapports/pointages.csv} & GET & Export\\\bottomrule
+\end{longtable}
+\chapter{Annexe C -- Réponse de pointage}
+\begin{lstlisting}[language=json,caption={Exemple JSON}]
+{
+  "type": "ENTREE",
+  "statut": "VALIDE",
+  "mode": "Presentiel",
+  "score": 0.9234,
+  "message": "Pointage enregistre avec succes !",
+  "pointage": {"date_heure": "2026-08-30T07:31:00Z"}
+}
+\end{lstlisting}
+\chapter{Annexe D -- Calcul d'absence}
+Pour un jour ouvré, le service parcourt les employés actifs, consulte congés, télétravail et entrées valides ou en attente. Si aucune présence n'est satisfaite, le statut est \texttt{absent}. Le même service est utilisé par dashboard et rapports.
+\chapter{Annexe E -- Calcul de retard}
+\begin{lstlisting}[language=Python,caption={Comparaison stricte à 08:30}]
+def est_en_retard(date_heure):
+    if isinstance(date_heure, str):
+        date_heure = datetime.fromisoformat(
+            date_heure.replace("Z", "+00:00"))
+    if date_heure.tzinfo is None:
+        date_heure = date_heure.replace(tzinfo=timezone.utc)
+    locale = date_heure.astimezone(TZ_CASABLANCA)
+    secondes = locale.hour * 3600 + locale.minute * 60
+    secondes += locale.second + locale.microsecond / 1000000
+    return secondes > 8 * 3600 + 30 * 60
+\end{lstlisting}
+\chapter{Annexe F -- Démonstration}
+\begin{enumerate}
+\item Présenter le portail interne Ménara Préfa.
+\item Se connecter avec un compte employé.
+\item Montrer le pointage caméra et le retour de validation.
+\item Se connecter avec un manager et présenter son périmètre.
+\item Créer puis valider une demande.
+\item Montrer l'espace RH et un export CSV.
+\item Expliquer sécurité, fuseau horaire et tests.
+\end{enumerate}
+\chapter{Annexe G -- Questions du jury}
+\begin{longtable}{p{6cm}p{7cm}}\toprule
+Question & Réponse attendue\\\midrule
+Pourquoi React et Flask ? & Séparation claire, écosystème mature et API testable.\\
+Pourquoi centraliser la présence ? & Garantir les mêmes règles pour dashboard et rapports.\\
+Comment protéger les données ? & JWT, permissions, hash, HTTPS et restriction biométrique.\\
+Comment définir un retard ? & Heure Casablanca strictement supérieure à 08:30.\\
+Pourquoi CSV ? & Compatibilité immédiate ; XLSX est une évolution.\\
+Que faire si la reconnaissance échoue ? & Message d'erreur et validation manuelle possible.\\\bottomrule
+\end{longtable}
+\chapter{Annexe H -- Glossaire}
+\begin{description}
+\item[API] Interface de programmation entre applications.
+\item[Embedding] Vecteur numérique représentant des caractéristiques faciales.
+\item[JWT] Jeton signé transportant identité et claims.
+\item[RBAC] Contrôle d'accès basé sur les rôles.
+\item[ORM] Couche de manipulation de la base avec objets Python.
+\item[KPI] Indicateur clé affiché sur le dashboard.
+\item[UTC] Référence temporelle universelle.
+\item[CSV] Format tabulaire compatible avec les tableurs.
+\end{description}
+\chapter*{Bibliographie et ressources}
+\begin{itemize}
+\item Documentation officielle Python, Flask et React.
+\item Documentation Vite, SQLAlchemy et Flask-JWT-Extended.
+\item Documentation DeepFace et FaceNet.
+\item Documentation Microsoft SQL Server et ODBC.
+\end{itemize}
+\chapter*{Fiche de synthèse}
+\begin{center}\begin{tabular}{>{\bfseries}p{5cm}p{8cm}}
+Projet & SmartPointage\\
+Organisation & Ménara Préfa\\
+Nature & Portail interne de présence\\
+Architecture & React -- Flask -- SQLAlchemy -- SQL Server\\
+Fonction clé & Reconnaissance faciale locale\\
+Règle de retard & Strictement après 08:30, heure Casablanca\\
+Profils & Employé, Manager, RH, Administrateur\\
+Livrables & Application, API, base, tests et documentation
+\end{tabular}\end{center}
+\end{document}

@@ -1,0 +1,29 @@
+# --- Framework web & API ---------------------------------------------------
+Flask==3.1.3
+Flask-SQLAlchemy==3.1.1
+Flask-Cors==6.0.5
+Flask-JWT-Extended==4.7.4
+python-dotenv==1.2.2
+SQLAlchemy==2.0.51
+
+# --- Base de données SQL Server ---------------------------------------------
+pyodbc==5.3.0
+# NB : pyodbc nécessite aussi le driver ODBC système "ODBC Driver 18 for SQL
+# Server" (ou 17) installé sur la machine qui exécute l'API — voir README.md
+# ("Installer le driver ODBC SQL Server"). Ce n'est PAS un paquet pip.
+
+# --- Reconnaissance faciale (DeepFace / FaceNet) ----------------------------
+deepface==0.0.100
+tf-keras~=2.16.0          # requis par retinaface avec TensorFlow >= 2.16 (Keras 3)
+opencv-python==4.10.0.84  # version épinglée : versions 5.x n'embarquent plus
+                          # les cascades Haar utilisées par detector_backend="opencv"
+tensorflow==2.16.1
+
+numpy>=1.26.0,<2.0.0
+Pillow==12.3.0
+
+# --- Calendrier hégirien (jours fériés marocains mobiles) ---------------------
+hijridate==2.3.0
+
+# --- Utilitaires -------------------------------------------------------------
+gunicorn==26.0.0           # serveur WSGI de production (optionnel en dev)
